@@ -1,12 +1,20 @@
-members = Member.create([
-    { name: 'Ellie', bbb: 'AshleyS' }, 
-    { name: 'Danielle', bbb: 'Brea' },
-    { name: 'AshleyT', bbb: 'Hedalyn' },
-    { name: 'Shannon', bbb: 'Sharlyn' },
-    { name: 'Brea', bbb: 'Danielle' },
-    { name: 'Megan', bbb: 'N/A' },
-    { name: 'AshleyS', bbb: 'Ellie' },
-    { name: 'Hope', bbb: 'N/A' },
-    { name: 'Kristan', bbb: 'M/A' },
-    { name: 'Sharlyn', bbb: 'Shannon' }
+Member.create([
+    { name: 'Ellie', active: true }, 
+    { name: 'Danielle', active: true },
+    { name: 'AshleyT', active: true },
+    { name: 'Shannon', active: true },
+    { name: 'Brea', active: true },
+    { name: 'Megan', active: true },
+    { name: 'AshleyS', active: true },
+    { name: 'Hope', active: true },
+    { name: 'Kristan', active: true },
+    { name: 'Sharlyn', active: true },
+    { name: 'Hedalyn', active: false }
+])
+
+MemberConnection.create([
+    { member_a_id: 1, member_b_id: 7},
+    { member_a_id: 2, member_b_id: 5},
+    { member_a_id: 3, member_b_id: 11},
+    { member_a_id: 4, member_b_id: 10},
 ])

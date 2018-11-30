@@ -10,11 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_141154) do
+ActiveRecord::Schema.define(version: 2018_11_30_144942) do
+
+  create_table "member_connections", id: false, force: :cascade do |t|
+    t.integer "member_a_id"
+    t.integer "member_b_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "members", force: :cascade do |t|
     t.string "name"
-    t.string "bbb"
+    t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
