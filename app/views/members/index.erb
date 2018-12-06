@@ -1,0 +1,5 @@
+<div>
+<% @members.each do |member| %>
+    <p><%= link_to "#{member.name} - #{member.active ? 'Active' : 'Inactive'}", "/#{member.id}" %></p>
+<% end %>
+</div>
