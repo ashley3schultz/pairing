@@ -1,0 +1,6 @@
+<div>
+<h2><%= @member.name %></h2>
+<% @pairs.each do |pair| %>
+    <p><%= link_to pair.name, "/#{pair.id}" %></p>
+<% end %>
+</div>
