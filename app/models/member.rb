@@ -1,18 +1,18 @@
 class Member < ApplicationRecord
     has_and_belongs_to_many(:members,
-    :join_table => "member_connections",
+    :join_table => "pairs",
     :foreign_key => "member_a_id",
     :association_foreign_key => "member_b_id")
 
-    def self.pairs(id)
+    def pairs
         pairs = []
-        MemberConnection.where(member_a_id: id).each do |m| 
-            mem = Member.find(m.member_b_id)
-            pairs << mem 
-        end
-        MemberConnection.where(member_b_id: id).each do |m| 
-            mem = Member.find(m.member_a_id)
-            pairs << mem
+        connections = Pair.where("member_a_id = #{self.id}").or(Pair.where("member_b_id = #{self.id}"))
+        connections.each do |c| 
+            if c.member_a_id == self.id
+                pairs << Member.find(c.member_b_id)
+            else 
+                pairs << Member.find(c.member_a_id)
+            end
         end 
         pairs
     end 
