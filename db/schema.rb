@@ -12,16 +12,17 @@
 
 ActiveRecord::Schema.define(version: 2018_11_30_144942) do
 
-  create_table "member_connections", id: false, force: :cascade do |t|
-    t.integer "member_a_id"
-    t.integer "member_b_id"
+  create_table "members", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "members", force: :cascade do |t|
-    t.string "name"
-    t.boolean "active"
+  create_table "pairs", id: false, force: :cascade do |t|
+    t.integer "member_a_id"
+    t.integer "member_b_id"
+    t.boolean "current"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

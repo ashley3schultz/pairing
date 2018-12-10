@@ -12,9 +12,9 @@ Member.create([
     { name: 'Hedalyn', active: false }
 ])
 
-MemberConnection.create([
-    { member_a_id: 1, member_b_id: 7},
-    { member_a_id: 2, member_b_id: 5},
-    { member_a_id: 3, member_b_id: 11},
-    { member_a_id: 4, member_b_id: 10},
+Pair.create([
+    { member_a_id: 1, member_b_id: 7, current: true },
+    { member_a_id: 2, member_b_id: 5, current: true },
+    { member_a_id: 3, member_b_id: 11, current: true },
+    { member_a_id: 4, member_b_id: 10, current: true }
 ])
