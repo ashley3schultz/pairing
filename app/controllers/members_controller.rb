@@ -6,7 +6,5 @@ class MembersController < ApplicationController
 
     def show 
         @member = Member.find_by(id: params[:id])
-        @pairs = Member.pairs(@member.id)
     end 
-
 end
