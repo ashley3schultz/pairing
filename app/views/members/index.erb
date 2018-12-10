@@ -1,5 +1,7 @@
 <div>
+<%= button_to "View Pairs", "/pairs", method: :get %>
 <% @members.each do |member| %>
-    <p><%= link_to "#{member.name} - #{member.active ? 'Active' : 'Inactive'}", "/#{member.id}" %></p>
+    <p><%= link_to member.name, "/members/#{member.id}" %>
+    <button href="/members/#{member.id}/status"><%= "Make #{member.active ? 'Inactive' : 'Active'}" %></button></p><br/>
 <% end %>
 </div>
