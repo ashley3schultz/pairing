@@ -1,0 +1,6 @@
+<div>
+<%= button_to "Create New Pairs", "/members/pairs", method: :get %>
+<% @pairs.each do |pair| %>
+    <p><%= "#{pair.member_a.name} - #{pair.member_b.name}" %></p>
+<% end %>
+</div>
