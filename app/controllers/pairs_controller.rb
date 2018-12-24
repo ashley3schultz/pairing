@@ -6,7 +6,7 @@ class PairsController < ApplicationController
     
     def create
         Pair.create_pairs
-        redirect_to root_path
+        redirect_to pairs_path
     end
 
 end
