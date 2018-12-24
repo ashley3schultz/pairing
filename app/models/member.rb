@@ -17,4 +17,9 @@ class Member < ApplicationRecord
         pairs
     end 
 
+    def pairable
+        members = Member.all.where.not(id: self.id)
+        pairable = members.select{|member| !self.pairs.include?(member) && self != member}
+    end
+
 end
