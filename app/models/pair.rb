@@ -12,6 +12,15 @@ class Pair < ApplicationRecord
         @@paired << b
     end 
 
+    def self.steal_pair(a)
+        np = @@members.select{|mem| !@@paired.include?(mem)}
+        @@pairs.detect do |p|
+            bp = p.member_b.pairable.detect{ |mem| np.include?(mem)}
+            ap = p.member_a.pairable.detect{ |mem| np.include?(mem)}
+           
+        end
+    end 
+
     def self.create_pairs
         self.check
         members = Member.where(active: true).shuffle
