@@ -6,7 +6,11 @@ class Pair < ApplicationRecord
     @@pairs = []
     @@paired = []
 
-   
+    def self.add_pair(a, b)
+        @@pairs << self.new(member_a_id: a.id, member_b_id: b.id, current: true)
+        @@paired << a
+        @@paired << b
+    end 
 
     def self.create_pairs
         self.check
