@@ -17,7 +17,17 @@ class Pair < ApplicationRecord
         @@pairs.detect do |p|
             bp = p.member_b.pairable.detect{ |mem| np.include?(mem)}
             ap = p.member_a.pairable.detect{ |mem| np.include?(mem)}
-           
+            if (a.pairable.include?(p.member_a) && bp) || (a.pairable.include?(p.member_b) && ap)
+                if a.pairable.include?(p.member_a) && bp
+                    self.add_pair(bp, p.member_b)
+                    p.member_b = a.id
+                    @@paired << a
+                else
+                    self.add_pair(ap, p.member_a)
+                    p.member_a = a.id
+                    @@paired << a
+                end
+            end
         end
     end 
 
