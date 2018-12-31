@@ -27,6 +27,16 @@ class Pair < ApplicationRecord
                     p.member_a = a.id
                     @@paired << a
                 end
+            else 
+                @@pairs.each do |p| 
+                    new_set = []
+                    if p.member_a.pairable.include?(p.member_a) && p.pairable.include?()
+                        new_set << self.new(member_a_id: a.id, member_b_id: p.member_a.id, current: true)
+                    else 
+                        new_set << p
+                    end
+                    @@pairs = new_set
+                end
             end
         end
     end 
