@@ -11,8 +11,11 @@ class Pair < ApplicationRecord
         @@members.each do |a|
             if !@@paired.include?(a)
                 b = a.pairable.detect{|p| !@@paired.include?(p) }
-                self.add_pair(a, b) if b
-                self.steel_pair(a) if !b
+                if !!b 
+                    self.add_pair(a, b)
+                else
+                    self.steel_pair(a)
+                end
             end
         end
         self.save_pairs
@@ -24,41 +27,43 @@ class Pair < ApplicationRecord
         @@paired << b
     end 
 
+
+        # np = @@members.select{|mem| !@@paired.include?(mem)}
+        # @@pairs.detect do |p|
+        #     bp = p.member_b.pairable.detect{ |mem| np.include?(mem)}
+        #     ap = p.member_a.pairable.detect{ |mem| np.include?(mem)}
+        #     if (a.pairable.include?(p.member_a) && bp) || (a.pairable.include?(p.member_b) && ap)
+        #         if a.pairable.include?(p.member_a) && bp
+        #             self.add_pair(bp, p.member_b)
+        #             binding.pry
+        #             p.member_b = a.id
+        #             @@paired << a
+        #         else
+        #             self.add_pair(ap, p.member_a)
+        #             p.member_a = a.id
+        #             @@paired << a
+        #         end
+        #     else 
+
+
+
     def self.steel_pair(a)
-        np = @@members.select{|mem| !@@paired.include?(mem)}
-        @@pairs.detect do |p|
-            bp = p.member_b.pairable.detect{ |mem| np.include?(mem)}
-            ap = p.member_a.pairable.detect{ |mem| np.include?(mem)}
-            binding.pry
-            if (a.pairable.include?(p.member_a) && bp) || (a.pairable.include?(p.member_b) && ap)
-                if a.pairable.include?(p.member_a) && bp
-                    self.add_pair(bp, p.member_b)
-                    p.member_b = a.id
-                    @@paired << a
-                else
-                    self.add_pair(ap, p.member_a)
-                    p.member_a = a.id
-                    @@paired << a
-                end
-            else 
-                member = @@paired.detect{ |mem| a.pairable.include?(mem)
-                pairs = @@pairs
-                new_pairs = []
-                new_paired = []
-                pairs.each do |pair| 
-                    if pair.member_a != member && pair.member_b != member
-                        new_set << pair
-                        new_paired << pair.member_a
-                        new_paired << pair.member_b
-                    end
-                end
-                @@pairs = new_pairs
-                @@paired = new_paired
-                @@pairs << self.add_pair(a, member)
-                @@paired << a
-                end
+        member = @@paired.detect{ |mem| a.pairable.include?(mem) }
+        binding.pry
+        pairs = @@pairs
+        new_pairs = []
+        new_paired = []
+        pairs.each do |pair| 
+            if pair.member_a != member && pair.member_b != member
+                new_pairs << pair
+                new_paired << pair.member_a
+                new_paired << pair.member_b
             end
         end
+        @@pairs = new_pairs
+        @@paired = new_paired
+        @@pairs << self.add_pair(a, member)
+        @@paired << a
     end 
 
     def self.prepair
