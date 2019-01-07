@@ -29,29 +29,34 @@ class Pair < ApplicationRecord
         @@pairs.detect do |p|
             bp = p.member_b.pairable.detect{ |mem| np.include?(mem)}
             ap = p.member_a.pairable.detect{ |mem| np.include?(mem)}
+            binding.pry
             if (a.pairable.include?(p.member_a) && bp) || (a.pairable.include?(p.member_b) && ap)
                 if a.pairable.include?(p.member_a) && bp
                     self.add_pair(bp, p.member_b)
-                    binding.pry
                     p.member_b = a.id
                     @@paired << a
                 else
-                    binding.pry
                     self.add_pair(ap, p.member_a)
                     p.member_a = a.id
                     @@paired << a
                 end
             else 
-                # pairs = @@pairs
-                # pairs.each do |pair| 
-                #     new_set = []
-                #     if p.member_a.pairable.include?(pair.member_a) && p.member_b.pairable.include?(pair.member_b)
-                #         new_set << self.new(member_a_id: a.id, member_b_id: p.member_a.id, current: true)
-                #     else 
-                #         new_set << p
-                #     end
-                # end
-                # @@pairs = new_set
+                member = @@paired.detect{ |mem| a.pairable.include?(mem)
+                pairs = @@pairs
+                new_pairs = []
+                new_paired = []
+                pairs.each do |pair| 
+                    if pair.member_a != member && pair.member_b != member
+                        new_set << pair
+                        new_paired << pair.member_a
+                        new_paired << pair.member_b
+                    end
+                end
+                @@pairs = new_pairs
+                @@paired = new_paired
+                @@pairs << self.add_pair(a, member)
+                @@paired << a
+                end
             end
         end
     end 
