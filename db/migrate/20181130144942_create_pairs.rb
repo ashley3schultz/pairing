@@ -4,6 +4,7 @@ class CreatePairs < ActiveRecord::Migration[5.2]
       t.integer :member_a_id
       t.integer :member_b_id
       t.boolean :current
+      t.integer :pair_index
       t.timestamps
     end
   end

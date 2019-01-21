@@ -6,81 +6,70 @@ class Pair < ApplicationRecord
     @@pairs = []
     @@paired = []
 
-    def self.create_pairs
-        self.prepair
-        @@members.each do |a|
-            if !@@paired.include?(a)
-                b = a.pairable.detect{|p| !@@paired.include?(p) }
-                if !!b 
-                    self.add_pair(a, b)
-                else
-                    self.steel_pair(a)
-                end
-            end
+    def self.update_current
+        pairs = Pair.order(pair_index:)
+        index = self.get_pair_index
+        if index >= pairs.last.pair_index}
+            self.reset
+            self.create_new_pair_sets
+        else
+            Pair.where(pair_index: index).update(current: false)
+            Pair.where(pair_index: index + 1).update(current: true)
         end
-        self.save_pairs
     end
 
-    def self.add_pair(a, b)
-        @@pairs << self.new(member_a_id: a.id, member_b_id: b.id, current: true)
+    def self.get_pair_index
+        Pair.where(current: true).limit(1).pair_index
+    end
+
+    def self.create_new_pair_sets
+        self.get_active_members
+        len @@members.length
+        index = 1
+        while index < @@members.length
+            @@paired.clear
+            if index.odd?
+                (index < len / 2) ? @@member.order(s_num:) : @@member.order(s_num: :desc)
+            end
+            @@members.each do |a|
+                if !@@paired.include?(a)
+                    mems = (index < len / 2) ? a.pairable.order(m_num: :desc) : a.pairable.order(m_num:)
+                    b = mems.detect{|m| !@@paired.include?(m) }
+                    self.add_pair(a, b, index)
+                end
+            end
+            self.save_pairs
+            index += 1
+        end
+        Pair.where(pair_index: 1).update(current: true)
+    end
+
+    def self.add_pair(a, b, i)
+        @@pairs << self.new(member_a_id: a.id, member_b_id: b.id, current: false, pair_index: i)
         @@paired << a
         @@paired << b
-    end 
+    end
 
+    def self.remove_me
+        #self.remove_me if mems.length % 2 == 0
+    end
 
-        # np = @@members.select{|mem| !@@paired.include?(mem)}
-        # @@pairs.detect do |p|
-        #     bp = p.member_b.pairable.detect{ |mem| np.include?(mem)}
-        #     ap = p.member_a.pairable.detect{ |mem| np.include?(mem)}
-        #     if (a.pairable.include?(p.member_a) && bp) || (a.pairable.include?(p.member_b) && ap)
-        #         if a.pairable.include?(p.member_a) && bp
-        #             self.add_pair(bp, p.member_b)
-        #             binding.pry
-        #             p.member_b = a.id
-        #             @@paired << a
-        #         else
-        #             self.add_pair(ap, p.member_a)
-        #             p.member_a = a.id
-        #             @@paired << a
-        #         end
-        #     else 
-
-
-
-    def self.steel_pair(a)
-        member = @@paired.detect{ |mem| a.pairable.include?(mem) }
-        binding.pry
-        pairs = @@pairs
-        new_pairs = []
-        new_paired = []
-        pairs.each do |pair| 
-            if pair.member_a != member && pair.member_b != member
-                new_pairs << pair
-                new_paired << pair.member_a
-                new_paired << pair.member_b
-            end
-        end
-        @@pairs = new_pairs
-        @@paired = new_paired
-        @@pairs << self.add_pair(a, member)
-        @@paired << a
-    end 
-
-    def self.prepair
-        @@members = Member.where(active: true).shuffle
-        num = 0
-        @@members.each do |mem| 
-            num = mem.pairs.size if num < mem.pairs.size 
-        end
-        if num >= @@members.size - 1
-            Pair.delete_all
-        else 
-            update_all(current: false)
+    def self.get_active_members
+        mems = Member.where(active: true).shuffle
+        mems.each_with_index do |mem, i|
+            mem.m_num = i + 1
+            mem.s_num = i + 1
+            @@members << mem
         end
     end
 
     def self.save_pairs
         @@pairs.each {|p| p.save}
+    end
+
+    def self.reset
+        Pair.delete_all
+        Member.update_all(m_num: 0, s_num: 0)
     end
 
 end
