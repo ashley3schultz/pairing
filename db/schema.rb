@@ -14,7 +14,9 @@ ActiveRecord::Schema.define(version: 2018_11_30_144942) do
 
   create_table "members", force: :cascade do |t|
     t.string "name"
-    t.boolean "active"
+    t.boolean "active", default: true
+    t.integer "m_num", default: -1
+    t.integer "p_num", default: -1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -22,7 +24,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_144942) do
   create_table "pairs", id: false, force: :cascade do |t|
     t.integer "member_a_id"
     t.integer "member_b_id"
-    t.boolean "current"
+    t.boolean "current", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
