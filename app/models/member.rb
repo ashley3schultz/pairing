@@ -27,4 +27,15 @@ class Member < ApplicationRecord
         end
     end
 
+    def get_next
+        i = self.p_num -1
+        if i == a.m_num
+            @@members.find_by(m_num: 0)
+        elsif i == 0
+            @@members.find_by(m_num: @@members.last.m_num)
+        else 
+            @@members.find_by(m_num: i)
+        end
+    end
+
 end
