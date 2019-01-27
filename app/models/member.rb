@@ -4,6 +4,8 @@ class Member < ApplicationRecord
     :foreign_key => "member_a_id",
     :association_foreign_key => "member_b_id")
 
+    @@members = []
+
     def pairs
         pairs = []
         connections = Pair.where("member_a_id = #{self.id}").or(Pair.where("member_b_id = #{self.id}"))
@@ -17,9 +19,12 @@ class Member < ApplicationRecord
         pairs
     end 
 
-    def pairable
-        members = Member.all.where.not(id: self.id)
-        pairable = members.select{|member| !self.pairs.include?(member) && self != member}
+    def self.get_active
+        mems = Member.where(active: true).shuffle
+        mems.each_with_index do |mem, i|
+            mem.m_num = i if mem.m_num == nil
+            @@members << mem
+        end
     end
 
 end
